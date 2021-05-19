@@ -67,9 +67,6 @@ def parse_args():
     parser.add_argument('--script',
                         required=True,
                         help='Script to execute')
-    parser.add_argument('--atomic',
-                        action='store_true',
-                        help='Atomic operation. Significantly improves performance and ensures that all queries are performed.')
 
     return parser.parse_args()
 
@@ -92,25 +89,21 @@ def config(filename, section):
     return cfg
 
 
-def pg_exec(params: dict, queries: tuple, atomic=False):
+def pg_exec(params: dict, queries: tuple):
     conn = None
     try:
         conn = psycopg2.connect(**params)
         logger.info('Connection created')
 
-        cur = conn.cursor()
-        for query in queries:
-            try:
-                cur.execute(query)
-                if not atomic:
-                    conn.commit()
-                logger.info(f'{query} OK')
-            except (Exception, psycopg2.DatabaseError) as err:
-                logger.error(f'{query} - {err}')
-                continue
-        cur.close()
-        if atomic:
-            conn.commit()
+        with conn:
+            with conn.cursor() as cur:
+                for query in queries:
+                    try:
+                        cur.execute(query)
+                        logger.info(f'{query} OK')
+                    except (Exception, psycopg2.DatabaseError) as err:
+                        logger.error(f'{query} - {err}')
+                        continue
     except (Exception, psycopg2.DatabaseError) as err:
         logger.error(err)
     finally:
@@ -123,7 +116,6 @@ def main():
     args = parse_args()
     config_arg = args.config
     script_arg = args.script
-    atomic_arg = args.atomic
 
     params = config(config_arg, 'postgresql')
     with open(script_arg) as fr:
@@ -131,7 +123,7 @@ def main():
         no_line_breaks = map(lambda ln: ln.replace('\n', ''), uncomment)
         queries = tuple(no_line_breaks)
 
-    pg_exec(params, queries, atomic_arg)
+    pg_exec(params, queries)
 
 
 if __name__ == '__main__':
