@@ -121,14 +121,10 @@ def pg_exec(params: dict, queries: tuple, atomic=False):
 
 
 def main():
-    # args = parse_args()
-    # config_arg = args.config
-    # script_arg = args.script
-    # atomic_arg = args.atomic
-
-    config_arg = '/home/dev/PycharmProjects/pypgexec/pypgexec.conf'
-    script_arg = '/home/dev/PycharmProjects/pypgexec/script.sql'
-    atomic_arg = True
+    args = parse_args()
+    config_arg = args.config
+    script_arg = args.script
+    atomic_arg = args.atomic
 
     params = config(config_arg, 'postgresql')
     with open(script_arg) as fr:
