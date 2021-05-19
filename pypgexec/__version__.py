@@ -21,7 +21,7 @@
 __title__ = 'pypgexec'
 __description__ = 'Script to execute queries in postgres database'
 __url__ = 'https://pypi.org/project/pypgexec/'
-__version__ = '1.1.2'
+__version__ = '1.2.2'
 __author__ = 'Alexis Torres Valdes'
 __author_email__ = 'alexis89.dev@gmail.com'
 __credits__ = ['Alexis Torres Valdes']
