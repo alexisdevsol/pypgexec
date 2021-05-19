@@ -67,8 +67,7 @@ def parse_args():
     parser.add_argument('--script',
                         required=True,
                         help='Script to execute')
-    parser.add_argument('-a',
-                        '--atomic',
+    parser.add_argument('--atomic',
                         action='store_true',
                         help='Atomic operation. Significantly improves performance and ensures that all queries are performed.')
 
