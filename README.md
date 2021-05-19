@@ -13,4 +13,4 @@ $ pypgexec
 
 # Help
 
-$ usbsecurity-gui -h | --help
+$ pypgexec -h | --help
