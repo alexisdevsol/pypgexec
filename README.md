@@ -1,2 +1,2 @@
 # pypgexec
-Script para ejecutar consultas en base de datos postgres
+Script to execute queries in postgres database
